@@ -1,0 +1,11 @@
+{
+  "name": "qplus",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Quentin Oschatz <q.oschatz@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "pi-camera-connect": "^0.2.0"
+  }
+}
