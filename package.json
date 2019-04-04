@@ -5,7 +5,9 @@
   "author": "Quentin Oschatz <q.oschatz@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.16.4",
-    "pi-camera-connect": "^0.2.0"
+    "pi-camera-connect": "^0.2.0",
+    "pusher": "^2.2.0"
   }
 }
