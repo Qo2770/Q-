@@ -4,6 +4,21 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const Pusher = require('pusher');
 
+// MongoDB and Mongoose
+const mongoose = require('mongoose');
+
+const db_url = 'mongodb://localhost:27017/';
+const db_name = 'test';
+mongoose.connect(db_url + db_name, {useNewUrlParser: true});
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("Connected to MongoDB");
+});
+
+
+
 // Create App
 let app = express();
 app.server = http.createServer(app);
@@ -12,7 +27,6 @@ app.server = http.createServer(app);
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname + '/app')));
 
 // Set Port
 app.set('port', (process.env.PORT || 5000));
@@ -29,7 +43,14 @@ app.get('/api/data', (req,res) => {
 });
 
 app.post('/api/data/add', (req, res) => {
+  console.log(req.body.data[0]);
 
+  let temperature = Number(req.body.data[0]) || null;
+  let humidity = Number(req.body.data[1]) || null;
+
+
+
+  res.json({ status: 200 });
 });
 
 // Start Server
