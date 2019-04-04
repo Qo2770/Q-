@@ -6,6 +6,7 @@ const Pusher = require('pusher');
 
 // MongoDB and Mongoose
 const mongoose = require('mongoose');
+const ObjectID = require('mongodb').ObjectID;
 
 const db_url = 'mongodb://localhost:27017/';
 const db_name = 'test';
@@ -45,10 +46,35 @@ var pusher = new Pusher(pusher_config);
 
 // ** Routes **
 
+// Timestamp = 2018-07-29 09:17:13.812189
+//             JJJJ-MM-DD HH:MM:SS.SSSSSS
+
+// Get Image files and Temperature/Humidity Data
+// Params: timeframe : if set to 'ALL', all records will be returned, not just the latest
 app.get('/api/data', (req,res) => {
+
+  // If all data is to be sent, set the param timeframe to ALL
+  // Else, send the last 24 hours
+
+  // Credit to chridam @ Stack Overflow
+  var timestamp = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  var hexSeconds = Math.floor(timestamp/1000).toString(16);
+
+  // Create an ObjectId with that hex timestamp
+  var constructedObjectId = ObjectID(hexSeconds + "0000000000000000");
+  console.log(constructedObjectId); // prints 564cd3810000000000000000
+  Temperature.find({}, function(err, all) {
+      Temperature.find({
+          "_id": { "$gt" : constructedObjectId }
+      }, function (err, latest) {
+          res.json({data: latest});
+      });
+  });
+  // ---
 
 });
 
+// Post new Data
 app.post('/api/data/add', (req, res) => {
   console.log(req.body.sensor);
 
@@ -65,6 +91,10 @@ app.post('/api/data/add', (req, res) => {
 
     sensorData = new Temperature({time: timeData, temperature: temperatureData, humidity: humidityData});
 
+    pusher.trigger('data', 'new-temp-data', {
+      newData: sensorData
+    });
+
   } else {
 
     // Image
@@ -72,6 +102,10 @@ app.post('/api/data/add', (req, res) => {
     let imageData = req.body.data;
 
     sensorData = new Images({time: timeData, file: imageData});
+
+    pusher.trigger('data', 'new-img-data', {
+      newData: sensorData
+    });
 
   }
 
