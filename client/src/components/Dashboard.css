@@ -1,4 +1,5 @@
 .Dashboard {
+  background: green;
 }
 
 .Panel {
@@ -8,9 +9,22 @@
   background: white;
 
   transition: all .2s ease-in-out;
+  overflow: hidden;
 }
 
 .hover:hover {
   transform: scale(1.02);
   cursor: pointer;
+}
+
+.streamContainer > img {
+  width: 75%;
+  max-height: 75%;
+  padding: 2%;
+}
+
+.streamContainer {
+  padding-top: 2%;
+  border-radius: 15px;
+  overflow: hidden;
 }

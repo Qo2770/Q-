@@ -1,23 +1,47 @@
 import React, { Component } from 'react';
 import './Dashboard.css';
 
-import GridLayout from 'react-grid-layout';
+import RGL, { WidthProvider } from "react-grid-layout";
 
-import Panel from './Panel';
+const ReactGridLayout = WidthProvider(RGL);
 
 class Dashboard extends Component {
-  render() {
+
+  static defaultProps = {
+    className: "layout",
+    items: 20,
+    rowHeight: 30,
+    onLayoutChange: function() {},
+    cols: 12
+  };
+
+  constructor(props) {
+    super(props);
+
     var layout = [
-      {i: 'a', x: 1, y: 0, w: 1, h: 2},
-      {i: 'b', x: 1, y: 0, w: 3, h: 2},
-      {i: 'c', x: 4, y: 0, w: 1, h: 2}
+      {i: 'Camera', x: 0, y: 0, w: 6, h: 12, minH: 6},
+      {i: 'Temperature', x: 6, y: 0, w: 6, h: 6},
+      {i: 'Humidity', x: 6, y: 6, w: 6, h: 6}
     ];
+    this.state = { layout };
+  }
+
+  render() {
     return (
-      <GridLayout className="layout" layout={layout} cols={12} rowHeight={30} width={1200}>
-        <div key="a" className="Panel hover">1</div>
-        <div key="b" className="Panel hover">2</div>
-        <div key="c" className="Panel hover">3</div>
-      </GridLayout>
+      <ReactGridLayout
+        layout={this.state.layout}
+        onLayoutChange={this.onLayoutChange}
+        {...this.props}
+      >
+        <div key="Camera" className="Panel hover">
+          <div className="streamContainer">
+            Interne Infrarot-Kamera (Funktioniert auch Nachts)
+            <img src="http://192.168.102.220:8081/?action=stream" onError={(e)=>{e.target.onerror = null; e.target.src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cb/Raspberry_Pi_Logo.svg/188px-Raspberry_Pi_Logo.svg.png"; e.target.style.height="150px"; e.target.style.width="120px";}} alt="" />
+          </div>
+        </div>
+        <div key="Temperature" className="Panel hover">2</div>
+        <div key="Humidity" className="Panel hover">3</div>
+      </ReactGridLayout>
     )
   }
 }
