@@ -1,4 +1,4 @@
-var imagesSchema = {
+var imagesFormat = {
   time: String,
   file: String
 }

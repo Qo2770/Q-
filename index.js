@@ -19,12 +19,12 @@ db.once('open', function() {
 
 // Mongoose Schemas
 const temperatureFormat = require('./schemas/temperature.js');
-const imagesSchema = require('./schemas/images.js');
+const imagesFormat = require('./schemas/images.js');
 var temperatureSchema = new mongoose.Schema(temperatureFormat);
 var imagesSchema = new mongoose.Schema(imagesFormat);
 
-var temperatureModel = mongoose.model("Temperature", temperatureSchema);
-var imagesModel = mongoose.model("Images", imagesSchema);
+var Temperature = mongoose.model("Temperature", temperatureSchema);
+var Images = mongoose.model("Images", imagesSchema);
 
 // Create App
 let app = express();
@@ -50,14 +50,38 @@ app.get('/api/data', (req,res) => {
 });
 
 app.post('/api/data/add', (req, res) => {
-  console.log(req.body.data[0]);
+  console.log(req.body.sensor);
 
-  let temperature = Number(req.body.data[0]) || null;
-  let humidity = Number(req.body.data[1]) || null;
+  let sensorData;
 
+  let timeData = req.body.time;
 
+  if(req.body.sensor === "temperature") {
 
-  res.json({ status: 200 });
+    // Temperature and Humidity
+
+    let temperatureData = Number(req.body.data[0]) || null;
+    let humidityData = Number(req.body.data[1]) || null;
+
+    sensorData = new Temperature({time: timeData, temperature: temperatureData, humidity: humidityData});
+
+  } else {
+
+    // Image
+
+    let imageData = req.body.data;
+
+    sensorData = new Images({time: timeData, file: imageData});
+
+  }
+
+  sensorData.save( err => {
+    if (err)
+      return res.status(500).send(err);
+    else
+      return res.status(200).send(sensorData);
+  });
+
 });
 
 // Start Server

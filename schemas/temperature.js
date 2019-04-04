@@ -1,7 +1,7 @@
-var temperatureSchema = {
+var temperatureFormat = {
   time: String,
-  temperature: Float,
-  Humidity: Float
+  temperature: Number,
+  humidity: Number
 }
 
 module.exports = temperatureFormat;
