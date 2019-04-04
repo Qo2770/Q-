@@ -17,7 +17,14 @@ db.once('open', function() {
   console.log("Connected to MongoDB");
 });
 
+// Mongoose Schemas
+const temperatureFormat = require('./schemas/temperature.js');
+const imagesSchema = require('./schemas/images.js');
+var temperatureSchema = new mongoose.Schema(temperatureFormat);
+var imagesSchema = new mongoose.Schema(imagesFormat);
 
+var temperatureModel = mongoose.model("Temperature", temperatureSchema);
+var imagesModel = mongoose.model("Images", imagesSchema);
 
 // Create App
 let app = express();
