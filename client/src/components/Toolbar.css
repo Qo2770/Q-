@@ -4,7 +4,7 @@
   padding: 0;
   border-bottom: 1px solid rgb(0,103,158);
   box-shadow: 1px 1px 8px rgba(0,0,0,0.7);
-  height: 40px;
+  height: 50px;
   text-align: left;
   vertical-align: middle;
   background: #00A6FF;
@@ -20,4 +20,5 @@
   -o-transform: translateY(50%);
   padding-left: 25px;
   color: white;
+  font-size: 16pt;
 }
