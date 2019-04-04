@@ -1,15 +1,14 @@
-.Panel {
+.Panel1 {
   border-radius: 5px;
   box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
   border: 1px solid rgba(0,0,0,0.1);
   background: white;
   padding: 15px;
-  margin: 10px;
 
   transition: all .2s ease-in-out;
 }
 
-.hover:hover {
+.hover1:hover {
   transform: scale(1.02);
   cursor: pointer;
 }
