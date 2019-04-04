@@ -7,7 +7,13 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "mongodb": "^3.2.2",
+    "mongoose": "^5.4.21",
     "pi-camera-connect": "^0.2.0",
     "pusher": "^2.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10"
   }
 }
