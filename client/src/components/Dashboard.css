@@ -17,6 +17,11 @@
   cursor: pointer;
 }
 
+.Header-Panel {
+  font-size: 1.5vw;
+  width: 90%;
+}
+
 .streamContainer > img {
   width: 75%;
   max-height: 75%;
