@@ -62,12 +62,12 @@ app.get('/api/data', (req,res) => {
 
   // Create an ObjectId with that hex timestamp
   var constructedObjectId = ObjectID(hexSeconds + "0000000000000000");
-  console.log(constructedObjectId); // prints 564cd3810000000000000000
   Temperature.find({}, function(err, all) {
       Temperature.find({
           "_id": { "$gt" : constructedObjectId }
       }, function (err, latest) {
           res.json({data: latest});
+          console.log("sent data: " + latest);
       });
   });
   // ---
@@ -80,7 +80,8 @@ app.post('/api/data/add', (req, res) => {
 
   let sensorData;
 
-  let timeData = req.body.time;
+  let timeData = Date.now();
+  console.log(timeData);
 
   if(req.body.sensor === "temperature") {
 

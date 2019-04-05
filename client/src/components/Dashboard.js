@@ -4,6 +4,10 @@ import './Dashboard.css';
 import {Line} from 'react-chartjs-2';
 import RGL, { WidthProvider } from "react-grid-layout";
 
+import axios from 'axios';
+
+import moment from 'moment';
+
 const ReactGridLayout = WidthProvider(RGL);
 
 class Dashboard extends Component {
@@ -24,7 +28,6 @@ class Dashboard extends Component {
       {i: 'Temperature', x: 6, y: 0, w: 6, h: 6},
       {i: 'Humidity', x: 6, y: 6, w: 6, h: 6}
     ];
-    this.state = { layout };
     const dataTemp = {
       labels: [],
       datasets: [
@@ -79,12 +82,71 @@ class Dashboard extends Component {
       ]
     };
 
-    this.setState({ dataTemp: dataTemp, dataHumidity: dataHumidity });
+    this.state = { layout, dataTemp, dataHumidity };
 
   }
 
-  getTemperatureData() {
+  componentDidMount() {
+    axios.get(`http://localhost:5000/api/data`)
+      .then(res => {
+        const data = res.data.data;
 
+        const dataTemp = {
+          labels: data.map(pt => {return moment(Number(pt.time)).format("hh:mm:ss")}),
+          datasets: [
+            {
+              label: 'Temperatur (in °C)',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: 'rgba(191,0,22,0.4)',
+              borderColor: 'rgba(181,39,42,1)',
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: 'rgba(181,39,42,1)',
+              pointBackgroundColor: '#fff',
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: 'rgba(181,39,42,1)',
+              pointHoverBorderColor: 'rgba(220,220,220,1)',
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data: data.map(pt => {return pt.temperature})
+            }
+          ]
+        };
+
+        const dataHumidity = {
+          labels: data.map(pt => {return moment(Number(pt.time)).format("hh:mm:ss")}),
+          datasets: [
+            {
+              label: 'Humidity (in %)',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: 'rgba(75,192,192,0.4)',
+              borderColor: 'rgba(75,192,192,1)',
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: 'rgba(75,192,192,1)',
+              pointBackgroundColor: '#fff',
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+              pointHoverBorderColor: 'rgba(220,220,220,1)',
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data: data.map(pt => {return pt.humidity})
+            }
+          ]
+        };
+
+        this.setState({ dataTemp: dataTemp, dataHumidity: dataHumidity });
+      });
   }
 
   render() {
