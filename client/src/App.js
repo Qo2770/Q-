@@ -4,6 +4,7 @@ import './App.css';
 import Toolbar from './components/Toolbar';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
+import Graph from './components/Graph';
 
 class App extends Component {
   render() {
